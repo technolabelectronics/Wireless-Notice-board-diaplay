@@ -1,0 +1,28 @@
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
+#include <BluetoothSerial.h>
+
+BluetoothSerial ESP_BT; //Object for Bluetooth
+LiquidCrystal_I2C lcd(0x27, 16, 2);  // set the LCD address to 0x27 for a 16 chars and 2 line display
+
+void setup() {
+  lcd.begin();  // initialize the lcd 
+  lcd.backlight();
+  lcd.setCursor(0, 0);
+
+  ESP_BT.begin("ESP32_BLUETOOTH"); //Name of your Bluetooth Signal
+  Serial.println("Bluetooth Device is Ready to Pair");
+
+  lcd.print("BT is Ready");
+}
+
+void loop() {
+  if (ESP_BT.available()) //Check if we receive anything from Bluetooth
+  {
+    String text = ESP_BT.readString();
+    lcd.setCursor(0, 0);
+    lcd.clear();
+    lcd.print(text);
+  }
+  
+}
